@@ -3,3 +3,6 @@
 没有问题的话我在这里创建的txt使用push操作是上传到了repository
 我在网页端的操作使用pull就是同步到了本地
 pull-request则为合并代码操作
+
+网页端打开测试
+修改然后尝试pull操作
