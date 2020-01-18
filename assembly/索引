@@ -1,0 +1,94 @@
+4asm
+	inc用法
+	[BX]使用
+	1.18.2.02
+		line 21
+			+ codesg ends
+			+ mov ax,4c00h
+			+int 21h
+			
+5asm
+	loop用法
+		1.18.17.36
+			line 18
+				start end----end start
+
+6asm
+	loop用法2
+		1.18.18.04
+			line 3
+				codesg end:-----codesg end
+				
+7asm
+	loop用法3
+		
+8asm
+	loop用法4 
+	将内存FFFF:0 B中的数据拷贝到0:200 20B中
+		改进版使用es段寄存器存放另一组数据 同ds
+			
+			MOV AX,0FFFFH
+			MOV DS,AX
+			MOV AX,0020H
+			MOV ES,AX
+			MOV BX,0
+			MOV CX,12
+		S:
+			MOV DL,[BX]
+			MOV ES:[BX],DL
+			INC BX
+			LOOPS
+			
+9asm
+	9条指令包含结束指令 向内存0:200-0:23F依次写入0-3fh(64)
+		
+		1 没有用cx控制循环次数 mov cx,63
+		2 忘记结束语句
+			MOV AX,4C00H
+			INT 21H
+		3 并没有达到要求9行指令 多了一行 百思不得其解	
+	作为第一次自己写的 属实不太行 这还是建立在抄了8次代码的基础上
+	
+	错误代码如下
+		assume cs:cdsg
+
+		cdsg segment
+
+		start:
+			mov ax,0
+			mov ds,ax
+			mov bx,200h
+			mov cx,64
+			
+		s:
+			mov [bx],ax
+			inc ax
+			inc bx
+			loop s
+
+			mov ax,4c00h
+			int 21h
+			
+		cdsg ends
+
+		end start
+
+
+10asm
+	指令复制到内存
+
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
