@@ -312,19 +312,40 @@ p命令执行INT 21
 			好处是可以节省空间 但不符合常理
 			
 
+6.1
+代码段中使用数据
+	dw define word
+		定义字型数据
+			定义八个字型数据 数据之间逗号隔开
+
+	程序11 计算存放在cs中8个数据的和 结果放在ax寄存器中
+		由于存储在cs中 cpu默认把其中的数据识别为代码指令  
+			这个时候就要添加入口 把代码入口添加在真正的指令后面
+					dw 0123h,0456h,0789h,0abch,0defh,0fedh,0cbah,0987h
+					mov bx,0
+					
+					应改为
+					dw 0123h,0456h,0789h,0abch,0defh,0fedh,0cbah,0987h
+			start：	mov bx,0
 
 
+代码段中使用数据
+	dw写在codesg即cs段中 所以数据存储在cs
 
+要求用栈传输数据
+	push [bx]
+	mov cs[bx],bx
+	显然脑瘫了这里
+	应该
+	
+	push [bx]
+	pop cs[bx]
 
-
-
-
-
-
-
-
-
-
+不同的段
+	ASSUME CS:CODE,DS:DATE,SS:STACK
+	
+	END START实际上是入口 程序被加载后CS:IP由这里执行start的代码
+	
 
 
 
