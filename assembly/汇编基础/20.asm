@@ -19,15 +19,15 @@ start:
 
 s:
 	mov cx,3
-	
+	mov bx,0
 	s2:
 		mov al,ds:[si+bx]
 		and al,11011111b
 		mov [si+bx],al
-		add si,10h
+		inc bx
 		loop s2
 	
-	inc bx
+	add si,10h
 	loop s
 	
 	mov ax,4c00h
