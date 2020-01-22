@@ -14,9 +14,10 @@ start:
 	
 s:
 	mov al,ds:[bx]
-	and al,11011111
+	and al,11011111b
 	mov ds:[bx],al
 	inc bx
+	loop s
 	
 	mov ax,4c00h
 	int 21h
