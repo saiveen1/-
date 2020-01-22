@@ -22,6 +22,7 @@ start:
 s:
 	push ds:[bx]
 	add bx,2
+	loop s
 	
 	mov ax,4c00h
 	int 21h
