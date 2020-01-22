@@ -505,14 +505,19 @@ dw db
 	
 	[BX+SI] [BX+DI]
 	20asm介绍了此方法的应用 类似于操作二维数组
-	
+		接触到数据溢出 思路代码是对的 但是cx的二次引用产生问题
+			执行内层循环cx变为0  loop语句分解为cx-- 那么
+				判断cx==0  cx--后为ffff所以无限循环
+				
+		用dx dataregister来存储cx中的值 执行完内存循环后再把值还给cx以判断外层循环
+		github有改动记录 不再赘述
 	[BX+SI+IDATA] [BX+DI+IDATA]
 		IDATA[BX][SI]
 		[BX].200[SI]
 	
 	不同寻址方式的应用
 	
-	直接编程体会
+		直接编程体会
 
 
 

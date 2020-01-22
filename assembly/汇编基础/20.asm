@@ -18,6 +18,7 @@ start:
 	mov cx,4
 
 s:
+	mov dx,cx
 	mov cx,3
 	mov bx,0
 	s2:
@@ -27,6 +28,7 @@ s:
 		inc bx
 		loop s2
 	
+	mov cx,dx
 	add si,10h
 	loop s
 	
