@@ -497,9 +497,14 @@ dw db
 	SI和DI
 		和功能相近的寄存器DS:[BX]
 		但是不能分成两个8位寄存器
+		SI Source Index
+			源变址寄存器可用来存放相对于DS段之源变址指针；
+		DI Destination Index
+			目的变址寄存器，可用来存放相对于 ES 段之目的变址指针。
 		
 	
 	[BX+SI] [BX+DI]
+	20asm介绍了此方法的应用 类似于操作二维数组
 	
 	[BX+SI+IDATA] [BX+DI+IDATA]
 		IDATA[BX][SI]
