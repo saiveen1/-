@@ -32,7 +32,6 @@ s:
 		loop s2
 	
 	pop cx
-	mov cx,dx
 	add si,10h
 	loop s
 	
