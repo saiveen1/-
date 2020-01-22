@@ -511,6 +511,19 @@ dw db
 				
 		用dx dataregister来存储cx中的值 执行完内存循环后再把值还给cx以判断外层循环
 		github有改动记录 不再赘述
+		
+		如果在使用多重循环时 dx也被使用 该如何呢
+			考虑使用内存暂存数据
+				MOV DS:[],CX
+				但是如果有多个暂存数据就非常麻烦要记住多个内存地址
+				此时引入栈
+					
+					mov dx,cx
+					mov cx,dx
+					更改为
+					PUSH CX
+					POP BX
+					
 	[BX+SI+IDATA] [BX+DI+IDATA]
 		IDATA[BX][SI]
 		[BX].200[SI]
