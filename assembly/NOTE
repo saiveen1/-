@@ -502,8 +502,12 @@ dw db
 	[BX+SI] [BX+DI]
 	
 	[BX+SI+IDATA] [BX+DI+IDATA]
+		IDATA[BX][SI]
+		[BX].200[SI]
 	
 	不同寻址方式的应用
+	
+	直接编程体会
 
 
 

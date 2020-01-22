@@ -23,7 +23,7 @@ start:
 s:
 	mov al,ds:[di+bx]
 	and al,11011111b
-	mov ds:[di+bx]
+	mov ds:[di+bx],al
 	add di,10h
 	
 	loop s
