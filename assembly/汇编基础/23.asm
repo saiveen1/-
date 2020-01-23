@@ -35,15 +35,15 @@ s:
 	mov cx,10h
 	
 	s2:
-		mov al,ds[bx]
+		mov al,ds:[bx]
 		mov es:[di+bx],al	;年份
 		
 		mov al,ds:[54h+bx]	;收入
-		mov es:[di+bx].5h
+		mov es:[di+bx+5H]
 
 		mov di,0
 			
-		mov al,ds[bx+0a4h]
+		mov al,ds:[bx+0a4h]
 		mov es:[di+bx].7h,al	;总人数
 		
 		mov ax,es:[di+5h]
@@ -52,10 +52,11 @@ s:
 		mov es:[di+bx].0dh,ah
 		mov es:[di+bx].0eh,al
 		
-		mov es:[di+4h],20h
-		mov es:[di+9h],20h
-		mov es:[di+0ch],20h
-		mov es:[di+0fh],20h
+		MOV AL,20H
+		mov es:[di+4h],AL
+		mov es:[di+9h],AL
+		mov es:[di+0ch],AL
+		mov es:[di+0fh],AL
 		
 		add di,10h
 		inc bx
