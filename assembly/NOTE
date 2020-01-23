@@ -532,12 +532,48 @@ dw db
 	
 		直接编程体会
 
+第八章
 
+bx si di bp
+	错误的用法！
+		BX+BP SI+DI
+	bp默认表示ss的偏移地址
+		
+指令在执行前  所需处理数据可以在三个地方
+				cpu内部 内存 端口
 
+总结
+	直接寻址			idata
+	寄存器间接寻址		bx
+	寄存器相对寻址		bx+IDATA
+	基址变址寻址		[BX][SI]------[BX+SI]
+	相对基址变址寻址	[BX+SI+IDATA]
 
+X PTR指明指令访问的内存单元是一个什么单元
+	8086中可以是word byte
 
+	MOV AX,2000H
+	MOV DS,AX
+	MOV WORD PTR[1000H]
+	结果ds中数据为01 00 FF FF FF 
 
+div 除法指令 division
+	除数 8 16位在寄存器或内存单元中
+	被除数 默认 在ax dx
+		除数	被除数
+		8		16(AX)
+		16		32(DX+AX)
+结果	8		16
+商		AL		AX
+余数	AH		DX
 
+	DIV REG
+	DIV 内存单元
+	
+	DIV BYTE PTR DS:[0]
+	
+伪指令dd
+	double word双字型数据
 
 
 
