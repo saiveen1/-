@@ -16,7 +16,7 @@ table segment
 table ends
 
 stack segment
-	db 2 dup (0)
+	DW 2 dup (0)
 stack ends
 
 codeseg segment
@@ -27,6 +27,7 @@ start:
 	mov es,ax
 	MOV AX,STACK
 	MOV SS,AX
+	MOV SP,4
 	
 	mov bx,0
 	mov di,0
@@ -42,17 +43,11 @@ s:
 		
 		mov al,ds:[54h+bx]	;收入
 		mov es:[di+bx+5H],al
-
-		mov di,0
 			
-		mov al,ds:[bx+0a4h]
+		mov al,ds:[bx+0a8h]
 		mov es:[di+bx].7h,al	;总人数
 		
-		mov ax,es:[di+5h]
-		mov dx,es:[di+7h]
-		div word ptr es:[di+0ah]	;人均
-		mov es:[di+bx].0dh,ah
-		mov es:[di+bx].0eh,al
+
 		
 		MOV AL,20H
 		mov es:[di+4h],AL
@@ -60,11 +55,18 @@ s:
 		mov es:[di+0ch],AL
 		mov es:[di+0fh],AL
 		inc bx
-		loop s2
+	loop s2
 		
-		add di,10h
-		pop cx
+	mov ax,es:[di+5h]
+	mov dx,es:[di+7h]
+	div word ptr es:[di+0ah]	;人均
+	mov es:[di+bx].0dh,ah
+	mov es:[di+bx].0eh,al
 	
+	add di,10h
+	pop cx
+	
+LOOP S
 
 	mov ax,4c00h
 	int 21h
