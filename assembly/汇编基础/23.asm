@@ -25,6 +25,8 @@ start:
 	mov ds,ax
 	mov ax,table
 	mov es,ax
+	MOV AX,STACK
+	MOV SS,AX
 	
 	mov bx,0
 	mov di,0
@@ -39,7 +41,7 @@ s:
 		mov es:[di+bx],al	;年份
 		
 		mov al,ds:[54h+bx]	;收入
-		mov es:[di+bx+5H]
+		mov es:[di+bx+5H],al
 
 		mov di,0
 			
@@ -57,11 +59,10 @@ s:
 		mov es:[di+9h],AL
 		mov es:[di+0ch],AL
 		mov es:[di+0fh],AL
-		
-		add di,10h
 		inc bx
 		loop s2
 		
+		add di,10h
 		pop cx
 	
 
