@@ -571,11 +571,20 @@ div 除法指令 division
 	DIV 内存单元
 	
 	DIV BYTE PTR DS:[0]
+	当超出ffff时 ax存储低位 dx存储高位
+	计算结果ax为商 dx为余数
 	
 伪指令dd
 	double word双字型数据
 
-
+dup 
+	DB 3 DUP(0)
+		定义三个0
+	DB 3 DUP(0,1,2)
+		定义9个字节
+			0 1 2 0 1 2 0 1 2
+	DB 3 DUP('ABC','abc')
+		ABCabcABCabcABCabc
 
 
 
