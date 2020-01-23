@@ -32,38 +32,34 @@ start:
 	mov bx,0
 	mov di,0
 	mov cx,21
+	mov si,0
 	
 s:
 	push cx
-	mov cx,10h
-	
+	mov cx,4h
+	push di
+	mov di,0
 	s2:
-		mov al,ds:[bx]
-		mov es:[di+bx],al	;年份
-		
-		mov al,ds:[54h+bx]	;收入
-		mov es:[di+bx+5H],al
-			
-		mov al,ds:[bx+0a8h]
-		mov es:[di+bx].7h,al	;总人数
-		
-
-		
-		MOV AL,20H
-		mov es:[di+4h],AL
-		mov es:[di+9h],AL
-		mov es:[di+0ch],AL
-		mov es:[di+0fh],AL
-		inc bx
+		mov al,ds:[si]
+		mov es:[bx+di],al	;年份
+		mov al,ds:[si+54h]	;收入
+		mov es:[bx+di+5H],al
+		inc si
+		inc di
 	loop s2
-		
-	mov ax,es:[di+5h]
-	mov dx,es:[di+7h]
-	div word ptr es:[di+0ah]	;人均
-	mov es:[di+bx].0dh,ah
-	mov es:[di+bx].0eh,al
 	
-	add di,10h
+	pop di
+	mov ax,ds:[di+0a8h]
+	mov es:[bx].0ah,ax	;总人数
+	
+		
+	mov ax,es:[bx+5h]
+	mov dx,es:[bx+7h]
+	div word ptr es:[bx+0ah]	;人均
+	mov es:[bx].0dh,ax
+
+	add bx,10h
+	add di,2h
 	pop cx
 	
 LOOP S
