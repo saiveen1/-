@@ -32,18 +32,18 @@ start:
 	mov bx,0
 	mov di,0
 	mov cx,21
-	mov si,0
+	mov si,0	;si在ds中控制年份收入的数据
 	
 s:
-	push cx
+	push cx	;控制外循环cx的值
 	mov cx,4h
-	push di
-	mov di,0
+	push di	;di控制ds中数据走向 而循环结束永远为4
+	mov di,0	;所以在总人数的时候需要恢复其值 
 	s2:
-		mov al,ds:[si]
+		mov al,ds:[si]	
 		mov es:[bx+di],al	;年份
-		mov al,ds:[si+54h]	;收入
-		mov es:[bx+di+5H],al
+		mov al,ds:[si+54h]	
+		mov es:[bx+di+5H],al	;收入
 		inc si
 		inc di
 	loop s2
@@ -59,7 +59,7 @@ s:
 	mov es:[bx].0dh,ax
 
 	add bx,10h
-	add di,2h
+	add di,2h	;人数两个字节
 	pop cx
 	
 LOOP S

@@ -13,7 +13,7 @@ code segment
 start:
 	mov ax,stack
 	mov ss,ax
-	mov sp ,16
+	mov sp,16
 	mov ax,data
 	mov ds,ax
 	push ds:[0]
