@@ -741,9 +741,93 @@ loop指令
 	遇到栈一定把sp赋值!!
 	24ASM因为运气好 不需要sp的操作  25asm中由于事先ss中有了值
 	所以一定要格外注意
+	要想在一个循环里换三种颜色那就需要栈来更改值
+	所以引入3个字长的栈 要注意定义时也遵循先入后出的原则
+	栈顶控制cx的值
+	同时sp要指向2
+	https://blog.csdn.net/qq_44803739/article/details/104089826
 			
 			
-			
+第十章
+ret和retf
+	
+	ret指令
+		用栈中的数据 修改ip内容 实现近转移
+		相当于
+			pop ip
+			jmp ip
+		
+	retf指令
+		用栈中数据修改cs ip内容 实现远转移 
+		执行reft指令时，相当于进行：
+		pop ip
+		pop cs
+		根据栈先进后出原则，应先将段地址cs入栈，再将偏移地址ip入栈。
+
+
+call指令
+	经常和ret配合使用 执行call时执行以下两步操作
+		当前ip或cs：ip压入栈中
+		jmp到标号处
+	call指令不能实现短转移
+		push IP
+		JMP NER PTR 标号
+
+依据位移进行转移的call指令
+	ip = ip + 16位位移
+	16位位移 = 标号处地址-call指令后的第一个字节的地址
+			mov ax,0
+			call s				1000:3
+			inc ax				1000:6
+		s:  pop ax				1000:7
+			mov ax,4c00h	
+			int 21h
+	!!一条指令如如下执行的 ：
+		1： cpu根据 ip 读指令（也就是从内存到缓冲区）
+		2：改变ip（指向下一条）
+		3：执行
+	所以cpu读取ip 03
+	改变ip（指向下一条）即06
+	再执行call s
+		push ip (06)
+		jmp short s
+
+转移的目的地址在指令中的call指令
+	call far ptr标号 远转移
+		PUSH CS
+		PUSHI IP
+		JMP FAR PTR 标号
+
+
+转移地址在寄存器中的call指令
+	call ax
+	相当于
+		PUSH IP
+		JMP AX
+
+转移地址在内存中的call指令
+	CALL WORD PTR DS:[BX]
+	相当于
+		PUSH IP
+		JMP WORD PTR 内存单元
+		
+	CALL DWORD PTR DS:[BX]
+	相当于
+		PUSH CS
+		PUSH IP
+		JMP DWORD PTR DS:[BX]
+
+call和ret的配合使用
+
+mul指令		
+
+模块化程序设计
+
+参数和结果传递问题
+
+批量数据的传递
+
+寄存器冲突的问题
 			
 			
 			
