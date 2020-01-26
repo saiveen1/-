@@ -1,12 +1,12 @@
 assume cs:code
 data segment
-	dw 8 sup(0)
+	dw 8 dup(0)
 data ends
 
 code segment
 start:
 	mov ax,data
-	mov ss,sx
+	mov ss,ax
 	mov sp,16
 	mov word ptr ss:[0],offset s
 	mov ss:[2],cs
