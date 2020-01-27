@@ -818,10 +818,68 @@ call指令
 		JMP DWORD PTR DS:[BX]
 
 call和ret的配合使用
+	mov ax,1
+	mov cx,3
+	call s
+	mov bx,ax	;(bx)=?
+	mov ax,4c00h
+	int 21h
+s:	
+	add,ax,ax
+	loop s
+	ret
+		CALL S时相当于
+			PUSH IP(MOV BX,AX)
+			JMP  SHORT S
+		S循环执行ax三次自加为8
+		RET相当于
+			POP IP 
+			JMP SHORT IP
+		BX为8
+	
+	call ret 具有子程序的源程序的框架
+	main:
+		...
+		...
+		call sub1
+		...
+		...
+		mov ax,4c00h
+		int 21h
+		
+	sub1:
+		...
+		call sub2
+		...
+		ret
+	sub2:
+		...
+		...
+		ret
 
 mul指令		
-
+	乘法指令
+	相乘的两个数必须为同一位数
+		al 八位 					ax 16位
+结果	放在ax中					dx高位 ax低位
+		MUL BYTE PTR DS:[0]			MUL WORD PTR [BX+SI+8]
+	
+	100*10
+		结果小于255 八位
+			MOV AL,100
+			MOV BL,10
+			MUL BL
+	
+	100*10000
+		MOV AX,100
+		MOV BX,10000
+		MUL BX
+			结果为 AX = 4240H    DX = 000FH
+			1000000 = F4240H
+		
+		
 模块化程序设计
+
 
 参数和结果传递问题
 
