@@ -9,9 +9,9 @@ start:
 	mov ax,stack
 	mov ss,ax
 	mov sp,16
-	mov ax,4240h
-	mov dx,0fh
-	mov cx,0ah
+	mov ax,68b1h
+	mov dx,3adeh
+	mov cx,3ad0h
 	
 	call divdw	;第一个入栈的是ip
 	mov ax,4c00h
@@ -41,6 +41,7 @@ divdw:
 	pop cx
 	pop ax	;原始ax
 	div cx
+	mov cx,dx
 	mov dx,si
 	ret
 
