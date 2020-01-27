@@ -70,7 +70,13 @@ SUB BX,BX
 POP BX
 POP AX
 记住每次操作sp 指向的空间永远是最低/最高地址的 2的倍数差值 因为栈每次传递一个字即两个字节
-pop 后 sp+2
+pop ax相当于
+	sp = sp+2
+	mov ax,ss:[sp]
+
+push ax相当于
+	sp = sp -2
+	mov ss:[sp],ax
 
 
 10000-1000f

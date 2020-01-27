@@ -19,15 +19,15 @@ start:
 show_ptr:
 	mov ax,0b800h
 	mov es,ax
+	mov bh,dh
+	mov bl,dl
 	
 	mov ax,0a0h
-	mov bl,dh
-	mul bx	
+	mul bh	
 	mov si,ax	;行
 	
 	mov ax,2
-	mov bl,dl
-	mul bx	
+	mul bl	
 	mov di,ax	;列
 	
 	add si,di
