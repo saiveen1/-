@@ -13,17 +13,17 @@ start:
 	mov dx,0fh
 	mov cx,0ah
 	
-	call divdw
+	call divdw	;第一个入栈的是ip
 	mov ax,4c00h
 	int 21h
 	
 divdw:
 	push ax
-	
-	mov ax,000fh
+	mov ax,dx
+	mov dx,0
 	div cx	;/ ax为X/N的商1 cx为第一个除的余数5
 	push cx
-	mov si,cx
+	mov si,dx
 	mov cx,2h
 	mov bx,ax
 	xn:
@@ -34,20 +34,13 @@ divdw:
 		
 		mov bx,si		;2 * ax为REM*10000的低位0000 dx为高位5
 		push dx
-		push ax
 		loop xn
 		
-	mov sp,16
-	pop si		;原始ax
-	add ax,si	;+ax
-	
-	pop cx
-	div cx
-	
-	mov sp,6
+	pop dx	;rem* dx
 	pop si	;int* dx
-	pop bx	;int* ax
-	add ax,bx
+	pop cx
+	pop ax	;原始ax
+	div cx
 	mov dx,si
 	ret
 
