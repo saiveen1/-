@@ -23,14 +23,15 @@ show_ptr:
 	mov ax,0a0h
 	mov bl,dh
 	mul bx	
-	mov bx,ax	;行
+	mov si,ax	;行
 	
 	mov ax,2
 	mov bl,dl
 	mul bx	
 	mov di,ax	;列
 	
-	add bx,di
+	add si,di
+	mov bx,si
 	mov si,0
 	mov di,0
 	
