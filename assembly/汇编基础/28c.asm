@@ -17,17 +17,17 @@ start:
 	mov ax,4c00h
 	int 21h
 	
-divdw:
-	push ax
-	mov ax,dx
-	mov dx,0
-	div cx	;/ ax为X/N的商1 dx为余数5
-	
-	mov bx,ax	;商高位
-	pop ax
-	div cx
-	mov cx,dx
-	mov dx,bx
-	ret
+	divdw:
+		push ax
+		mov ax,dx
+		mov dx,0
+		div cx	;/ ax为X/N的商1 dx为余数5
+		
+		mov bx,ax	;商高位
+		pop ax
+		div cx
+		mov cx,dx
+		mov dx,bx
+		ret
 codesg ends
 end start

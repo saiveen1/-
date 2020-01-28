@@ -172,6 +172,7 @@
 		call offset 的应用回顾
 
 ### 27asm
+https://blog.csdn.net/qq_44803739/article/details/104093837
 	实验10 1
 		把显存显示实现为一个接口 以8行三列绿色为例子
 		
