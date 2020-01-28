@@ -159,7 +159,7 @@
 			
 ### 23asm
 	实验7 寻址在结构化数据中的应用
-			
+	https://blog.csdn.net/qq_44803739/article/details/104083692
 ### 24asm
 	实验8 一个奇怪的程序
 
@@ -172,7 +172,7 @@
 		call offset 的应用回顾
 
 ### 27asm
-https://blog.csdn.net/qq_44803739/article/details/104093837
+	https://blog.csdn.net/qq_44803739/article/details/104093837
 	实验10 1
 		把显存显示实现为一个接口 以8行三列绿色为例子
 		
@@ -190,3 +190,7 @@ https://blog.csdn.net/qq_44803739/article/details/104093837
 ### 29asm
 	实验10 3
 		数值的十进制显示
+
+### 30asm
+	课程设计1的准备
+		对除法越界和数值显示的改进
