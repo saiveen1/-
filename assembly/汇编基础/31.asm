@@ -39,8 +39,12 @@ start:
 	
 	mov ax,es
 	mov ds,ax
-	mov dx,0200
-	mov cl,70h
+	mov dh,0	;行
+	mov dl,0
+	mov cl,7h
+	mov ch,0
+	call show_list
+
 	
 	mov ax,4c00h
 	int 21h
@@ -57,8 +61,7 @@ s21:
 		inc di
 	loop s21_4_1
 	
-	mov ax,ds:[si+50h]	;第一次结束为4
-	mov dx,ds:[si+52h]
+	call salary
 	
 	mov cx,2
 	to_char:	;传入总收入和人数
@@ -99,8 +102,7 @@ s21:
 		call half
 		
 		mov cx,ax	;人数在ds占两个字节
-		mov ax,ds:[si+50h]	;第一次结束为4
-		mov dx,ds:[si+52h]
+		call salary
 		mov si,cx
 		div word ptr ds:[si+0a6h]
 		mov dx,0
@@ -117,13 +119,60 @@ s21:
 	add bx,20h
 loop s21
 ret
+
+show_list:
+	mov ax,cx
+	mov cx,21
+	mov bx,0
+	SL_21:
+		push cx
+		mov cx,31	;20h个数据是32 最后一个为0
+		mov si,0
 		
+		SL_21_31:
+			push cx
+			mov cl,ds:[bx+si]
+			jcxz space
+		continue:
+			inc si
+			pop cx	;3数据循环
+		loop SL_21_31
+		
+		mov cl,al
+		inc dh
+		mov si,bx
+		push ax
+		push bx
+		call show_str
+		pop bx
+		pop ax
+		add bx,20h
+		
+		pop cx	;行循环cx
+		
+	loop SL_21
+ret
+
+space:
+	push ax
+	mov ax,20h
+	mov ds:[bx+si],al
+	pop ax
+	jmp short continue	
+
+
+salary:
+	mov ax,ds:[si+50h]	;第一次结束为4
+	mov dx,ds:[si+52h]
+ret
 dtoc:
 	psi:
 		push si
 	re:	
 		mov cx,0ah
+		push bx
 		call div_plus	;执行完后cx为余数 ax低位 dx高位
+		pop bx
 		add cx,30h
 		mov ds:[si],cl
 		inc si
