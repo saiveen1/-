@@ -5,7 +5,7 @@ dw 8 dup(0)
 datasg ends
 
 stack segment
-dw 8 dup(0)
+dw 16 dup(0)
 stack ends
 
 codesg segment
@@ -15,8 +15,9 @@ start:
 	mov bx,datasg
 	mov ds,bx
 	mov bx,0
-	mov si,0
+	mov si,0e0h
 	mov di,0
+	mov sp,32
 	call dtoc
 	
 	mov dh,8
@@ -28,33 +29,36 @@ start:
 	int 21h
 	
 dtoc:
-	mov cx,0ah
-	call div_plus	;执行完后cx为余数 ax低位 dx高位
-	add cx,30h
-	mov ds:[si],cl
-	inc si
-	
-	mov cx,ax	;判断最后一位
-	jcxz finsh
-jmp short dtoc
+	psi:
+		push si
+	re:	
+		mov cx,0ah
+		call div_plus	;执行完后cx为余数 ax低位 dx高位
+		add cx,30h
+		mov ds:[si],cl
+		inc si
+		mov cx,ax	;判断最后一位
+		jcxz finsh
+	jmp short re
 	
 	finsh:
-		mov dx,si
-		mov cx,si
-		sub si,dx
+		mov cx,si	
+		pop si		
+		sub cx,si
+		mov dx,si 
 		s1:
 			mov al,ds:[si]	;栈一次传一个字节
 			push ax
 			inc si
 		loop s1
-		
-		mov cx,dx
-		sub si,dx
-		
+		mov cx,si
+		sub cx,dx
+		mov si,dx
 		s2:
 			pop ds:[si]
 			inc si
 		loop s2
+		mov si,dx
 	ret
 		
 div_plus:
@@ -92,6 +96,7 @@ show_str:
 	
 	mov ax,0a0h
 	mul bh	
+	push si
 	mov si,ax	;行
 	
 	mov ax,2
@@ -100,7 +105,7 @@ show_str:
 	
 	add si,di
 	mov bx,si
-	mov si,0
+	pop si
 	mov di,0
 
 	s:	

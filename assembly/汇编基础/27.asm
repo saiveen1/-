@@ -1,7 +1,7 @@
 assume cs:code, ds:data
 
 data segment
-	db 'Welcome to Masm!',0
+	db 3 dup ('Welcome to Masm!'),0
 data ends
 
 code segment

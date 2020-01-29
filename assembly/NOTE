@@ -904,7 +904,11 @@ mul指令
 
 寄存器冲突的问题
 			
-			
+sub ax,bx
+相当于ax-ax		然后mov ax
+初始化sp之后再进行push
+
+在call之前的push行为都是找死....
 			
 			
 			
