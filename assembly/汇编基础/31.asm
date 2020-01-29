@@ -10,6 +10,7 @@ datasg segment
 
 	dw 3, 7, 9, 13, 28, 38, 130, 220, 475, 778, 1001, 1442, 2258, 2793, 4037, 5635, 8226
 	dw 11542, 14430, 15257, 17800
+	dw 16 dup(0)
 datasg ends
 
 table segment
@@ -17,7 +18,7 @@ table segment
 table ends
 
 stack segment
-	dw 8 dup(0)
+	dw 16 dup(0)
 stack ends
 
 codesg segment
@@ -28,12 +29,11 @@ start:
 	mov es,ax
 	mov ax,stack
 	mov ss,ax
-	mov sp,16
+	mov sp,32
 	mov bx,0
 	mov cx,21
 	mov dx,0
 	mov si,0
-	mov di,0
 	
 	call s21
 	
@@ -46,87 +46,109 @@ start:
 	int 21h
 	
 s21:
-	push cx
-	mov cx,2
+	push cx		;!!!!!!!!!!!!!!
+	mov cx,4
+	mov di,0
 	
-	s21_2:
-		mov ax,ds:[si]
-		mov es:[bx+di],ax
-		add si,2
-		add di,2
-		mov ax,ds:[si]
-		mov es:[bx+di],ax
-	loop s21_2
+	s21_4_1:
+		mov al,ds:[si]
+		mov es:[bx+di],al
+		inc si
+		inc di
+	loop s21_4_1
 	
 	mov ax,ds:[si+50h]	;第一次结束为4
 	mov dx,ds:[si+52h]
-	push si
 	
 	mov cx,2
-	push cx
 	to_char:	;传入总收入和人数
+		push si   ;!!!!!!!!!!!!!!
 		jcxz avg
-		mov si,0e0			;空闲内存
-		push si
-		call dtoc
+		mov si,0e0h			;空闲内存
+		push cx  ;!!!!!!!!!!!!!!
+		call clean
 		
+		call dtoc
 		mov cx,4		
-		pop si			;line 60
-		s21_4:
+		s21_4_2:
 			mov ax,ds:[si]
-			mov es:[bx+di+5],ax
+			mov es:[bx+di+4],ax
 			
 			add si,2
 			add di,2
-		loop s21_8
+		loop s21_4_2
 		
-		pop cx		;line 56
+		pop cx		;line 68
 		pop si		;line 53
-		mov ax,ds:[si+0a4h]
-		mov dx,dx:[si+0a6h]
+		
+		push cx
+		call half
+		mov cx,si
+		mov si,ax
+		
+		mov ax,ds:[si+0a6h]
+		mov si,cx
+		pop cx
+		
+		mov dx,0h
 		add di,4
 		dec cx
 		jmp short to_char
 		
-	avg:	;di 20 si 4
+	avg:	;di 1c si 15
+		call half
+		
+		mov cx,ax	;人数在ds占两个字节
 		mov ax,ds:[si+50h]	;第一次结束为4
 		mov dx,ds:[si+52h]
-		div word ptr ds:[0a4h]
-		mov es:[bx+di+9h]
+		mov si,cx
+		div word ptr ds:[si+0a6h]
+		mov dx,0
+		mov si,0e0h
+		call clean
+		call dtoc
 		
+		mov ax,ds:[si]
+		mov es:[bx+di],ax
+		mov ax,ds:[si+2]
+		mov es:[bx+di+2],ax
+		pop si ;!!!!!!!!!!!!!!
 	pop cx	;line 39
 	add bx,20h
 loop s21
 ret
 		
 dtoc:
-	mov cx,0ah
-	call div_plus	;执行完后cx为余数 ax低位 dx高位
-	add cx,30h
-	mov ds:[si],cl
-	inc si
-	
-	mov cx,ax	;判断最后一位
-	jcxz finsh
-jmp short dtoc
+	psi:
+		push si
+	re:	
+		mov cx,0ah
+		call div_plus	;执行完后cx为余数 ax低位 dx高位
+		add cx,30h
+		mov ds:[si],cl
+		inc si
+		mov cx,ax	;判断最后一位
+		jcxz finsh
+	jmp short re
 	
 	finsh:
-		mov dx,si
-		mov cx,si
-		sub si,dx
+		mov cx,si	
+		pop si		
+		sub cx,si
+		mov dx,si 
 		s1:
 			mov al,ds:[si]	;栈一次传一个字节
 			push ax
 			inc si
 		loop s1
-		
-		mov cx,dx
-		sub si,dx
-		
+		mov cx,si
+		sub cx,dx
+		mov si,dx
 		s2:
 			pop ds:[si]
 			inc si
 		loop s2
+		mov si,dx
 	ret
 		
 div_plus:
@@ -164,6 +186,7 @@ show_str:
 	
 	mov ax,0a0h
 	mul bh	
+	push si
 	mov si,ax	;行
 	
 	mov ax,2
@@ -172,7 +195,7 @@ show_str:
 	
 	add si,di
 	mov bx,si
-	mov si,0
+	pop si
 	mov di,0
 
 	s:	
@@ -191,5 +214,28 @@ show_str:
 	ok:
 		pop cx
 	ret
+
+clean:	;使用ax si
+	push ax
+	push cx
+	push si
+	mov cx,8
+	s_c:
+		mov ax,0
+		mov ds:[si],ax
+		inc si
+	loop s_c
+	pop si
+	pop cx
+	pop ax
+	ret
+	
+half:
+	mov ax,si
+	mov dx,0
+	mov cx,2
+	div cx
+ret
+
 codesg ends
 end start
