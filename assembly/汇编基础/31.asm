@@ -39,7 +39,7 @@ start:
 	
 	mov ax,es
 	mov ds,ax
-	mov dh,0	;行
+	mov dh,3	;行
 	mov dl,0
 	mov cl,7h
 	mov ch,0
@@ -120,6 +120,11 @@ s21:
 loop s21
 ret
 
+salary:	;求收入
+	mov ax,ds:[si+50h]	;第一次结束为4
+	mov dx,ds:[si+52h]
+ret
+
 show_list:
 	mov ax,cx
 	mov cx,21
@@ -153,18 +158,13 @@ show_list:
 	loop SL_21
 ret
 
-space:
+space:		;替换空格
 	push ax
 	mov ax,20h
 	mov ds:[bx+si],al
 	pop ax
 	jmp short continue	
 
-
-salary:
-	mov ax,ds:[si+50h]	;第一次结束为4
-	mov dx,ds:[si+52h]
-ret
 dtoc:
 	psi:
 		push si
@@ -264,7 +264,7 @@ show_str:
 		pop cx
 	ret
 
-clean:	;使用ax si
+clean:	;使用ax si	8个字节取0 清空内存
 	push ax
 	push cx
 	push si
@@ -279,7 +279,7 @@ clean:	;使用ax si
 	pop ax
 	ret
 	
-half:
+half:	;除2
 	mov ax,si
 	mov dx,0
 	mov cx,2
