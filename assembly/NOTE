@@ -1010,7 +1010,7 @@ OF OVERFLOW FLAG
 			结果00H ZF 1
 			0个1 0偶数 PF 1 
 		
-adc指令
+adc指令 ADD WITH CARRY
 	ADD AX,BX
 	相当于 
 		AX = AX+BX+CF
@@ -1026,4 +1026,69 @@ adc指令
 		INC SI
 		INC SI
 	不能ADD SI,2因为会影响CF的值 INC不会
+
+SBB指令 SUBSTRACT WITH BORROW
+	用法等同ADC
+
+CMP指令
+	功能相当于减法 但不保存结果
+	
+	CMP AX,AX
+		结果为0 但并不保存在ax中 仅影响flag各位
+		ZF 1
+		PF 1
+		SF 0
+		CF 0
+		OF 0
+	
+	例如CMP AX,BX 无符号数
+	AX = BX		ZF = 1	je 	jmp equal
+	AX != BX	ZF = 0	jne jmp not equal
+	AX < BX		CF = 1 	jb	jmp blow 
+	AX >= BX	CF = 0	jnb jmp not blow
+	AF > BX		CF = 0 且 ZF = 0	ja 	jmp above
+	AX <= BX	CF = 1 或 ZF = 1	jna jmp not above
+	
+	绝大部分情况
+	
+	和ADD SUB一样 cpu在执行cmp的时候也包含无符号和有符号的比较
+	
+DF DIRECTION FLAG   FLAG第十位
+	方向标志位
+		在串处理指令中，控制每次操作后si di的增减
+		
+		df = 0每次操作后si di递增
+		df = 1每次操作后si di递减
+	
+	MOVSB
+		字节单位传送
+		MOV BYTE FROM STRING TO STRING
+	MOVSW
+		字单位传送
+	都表示DS:SI中的数据传入ES:DI中
+	再根据DF的值 操作si di
+	
+	配合ret使用 实现循环
+	cld(CLEAR DIRECTION FLAG) 将df置0
+	std(SET DIRECTION FLAG) 将df置1
+	cx控制循环次数
+	
+		MOV SI,0
+		MOV DI,0
+		MOV CX,16
+		CLD
+		REP MOVSB
+
+PUSHF POPF
+	对标志寄存器的栈操作
+
+DEBUG中的标志寄存器
+	用的时候查一下就好了
+	标志	值1		值0
+	OF		OV      NV
+	SF 		NG		PL
+	ZF		ZR 		NZ
+	PF 		PE		PO
+	CF		CY 		NC
+	DF 		DN		UP
 			
